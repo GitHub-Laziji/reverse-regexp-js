@@ -8,7 +8,7 @@ npm i reverse-regexp-js
 
 ## 使用
 ```js
-const Node = require("../dist/index").default;
+import Node from "reverse-regexp-js";
 
 function random(expression, title) {
   console.log(`${title} ${expression}`);
