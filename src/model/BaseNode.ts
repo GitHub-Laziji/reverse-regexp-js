@@ -1,4 +1,7 @@
 import { Node } from "./Node";
+import { UninitializedException } from "../exception/UninitializedException";
+import { RegexpIllegalException } from "../exception/RegexpIllegalException";
+import { TypeNotMatchException } from "../exception/TypeNotMatchException";
 
 export abstract class BaseNode implements Node {
 
@@ -32,7 +35,7 @@ export abstract class BaseNode implements Node {
 
   public random(): string {
     if (!this.isInitialized()) {
-      throw new Error();
+      throw new UninitializedException();
     }
     return this.baseRandom(this.expression, this.expressionFragments);
   }
@@ -44,7 +47,7 @@ export abstract class BaseNode implements Node {
   public init(): void {
     if (!this.initialized) {
       if (!this.test()) {
-        throw new Error();
+        throw new TypeNotMatchException();
       }
       this.baseInit(this.expression, this.expressionFragments);
       this.initialized = true;
@@ -88,7 +91,7 @@ export abstract class BaseNode implements Node {
     }
     if (expression.charAt(l) == '\\') {
       if (l + 1 >= r) {
-        throw new Error();
+        throw new RegexpIllegalException(expression, l + 1);
       }
       return expression.substring(l, l + 2);
     }
@@ -103,7 +106,7 @@ export abstract class BaseNode implements Node {
         }
         i++;
       }
-      throw new Error();
+      throw new RegexpIllegalException(expression, r);
     }
     if (expression.charAt(l) == '{') {
       let i: number = l + 1;
@@ -114,25 +117,25 @@ export abstract class BaseNode implements Node {
         }
         if (expression.charAt(i) == ',') {
           if (hasDelimiter) {
-            throw new Error();
+            throw new RegexpIllegalException(expression, i);
           }
           hasDelimiter = true;
           i++;
           continue;
         }
         if (expression.charAt(i) < '0' || expression.charAt(i) > '9') {
-          throw new Error();
+          throw new RegexpIllegalException(expression, i);
         }
         i++;
       }
-      throw new Error();
+      throw new RegexpIllegalException(expression, r);
     }
     if (expression.charAt(l) == '(') {
       let i: number = l + 1;
       while (true) {
         let result: string = this.findFirst(expression, i, r);
         if (result == null || result.length == 0 || result.length + i >= r) {
-          throw new Error();
+          throw new RegexpIllegalException(expression, i);
         }
         i += result.length;
         if (expression.charAt(i) == ')') {

@@ -1,5 +1,8 @@
 "use strict";
 exports.__esModule = true;
+var UninitializedException_1 = require("../exception/UninitializedException");
+var RegexpIllegalException_1 = require("../exception/RegexpIllegalException");
+var TypeNotMatchException_1 = require("../exception/TypeNotMatchException");
 var BaseNode = /** @class */ (function () {
     function BaseNode(expression, expressionFragments, initialize) {
         if (initialize === void 0) { initialize = true; }
@@ -27,7 +30,7 @@ var BaseNode = /** @class */ (function () {
     };
     BaseNode.prototype.random = function () {
         if (!this.isInitialized()) {
-            throw new Error();
+            throw new UninitializedException_1.UninitializedException();
         }
         return this.baseRandom(this.expression, this.expressionFragments);
     };
@@ -37,7 +40,7 @@ var BaseNode = /** @class */ (function () {
     BaseNode.prototype.init = function () {
         if (!this.initialized) {
             if (!this.test()) {
-                throw new Error();
+                throw new TypeNotMatchException_1.TypeNotMatchException();
             }
             this.baseInit(this.expression, this.expressionFragments);
             this.initialized = true;
@@ -74,7 +77,7 @@ var BaseNode = /** @class */ (function () {
         }
         if (expression.charAt(l) == '\\') {
             if (l + 1 >= r) {
-                throw new Error();
+                throw new RegexpIllegalException_1.RegexpIllegalException(expression, l + 1);
             }
             return expression.substring(l, l + 2);
         }
@@ -89,7 +92,7 @@ var BaseNode = /** @class */ (function () {
                 }
                 i++;
             }
-            throw new Error();
+            throw new RegexpIllegalException_1.RegexpIllegalException(expression, r);
         }
         if (expression.charAt(l) == '{') {
             var i = l + 1;
@@ -100,25 +103,25 @@ var BaseNode = /** @class */ (function () {
                 }
                 if (expression.charAt(i) == ',') {
                     if (hasDelimiter) {
-                        throw new Error();
+                        throw new RegexpIllegalException_1.RegexpIllegalException(expression, i);
                     }
                     hasDelimiter = true;
                     i++;
                     continue;
                 }
                 if (expression.charAt(i) < '0' || expression.charAt(i) > '9') {
-                    throw new Error();
+                    throw new RegexpIllegalException_1.RegexpIllegalException(expression, i);
                 }
                 i++;
             }
-            throw new Error();
+            throw new RegexpIllegalException_1.RegexpIllegalException(expression, r);
         }
         if (expression.charAt(l) == '(') {
             var i = l + 1;
             while (true) {
                 var result = this.findFirst(expression, i, r);
                 if (result == null || result.length == 0 || result.length + i >= r) {
-                    throw new Error();
+                    throw new RegexpIllegalException_1.RegexpIllegalException(expression, i);
                 }
                 i += result.length;
                 if (expression.charAt(i) == ')') {
