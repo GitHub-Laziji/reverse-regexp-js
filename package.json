@@ -1,0 +1,12 @@
+{
+  "name": "reverse-regexp-js",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./dist/index.js",
+  "scripts": {
+    "test": "tsc ./src/index.ts --outDir ./dist && node ./test/test.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
