@@ -1,12 +1,22 @@
 {
   "name": "reverse-regexp-js",
-  "version": "1.0.0",
-  "description": "",
+  "version": "1.0.1",
+  "description": "使用正则表达式生成随机数据",
   "main": "./dist/index.js",
   "scripts": {
     "test": "tsc ./src/index.ts --outDir ./dist && node ./test/test.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "keywords": [
+    "Regexp"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GitHub-Laziji/reverse-regexp-js.git"
+  },
+  "author": "laziji",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/GitHub-Laziji/reverse-regexp-js/issues"
+  },
+  "homepage": "https://github.com/GitHub-Laziji/reverse-regexp-js#readme"
 }
